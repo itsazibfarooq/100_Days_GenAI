@@ -1,6 +1,11 @@
-from torchvision import transforms
-from PIL import Image
+import warnings 
+warnings.filterwarnings('ignore')
+
+import os 
+import torch 
 from torch import nn
+from PIL import Image
+from torchvision import transforms
 
 class Encoder(nn.Module):
     def __init__(self, h=32, w=32, latent_dim=128):
@@ -21,13 +26,22 @@ def load_image(path, h=32, w=32):
     ])
     return tns(img).unsqueeze(0)
 
+def save_ckpts(model, path):
+    torch.save(model.state_dict(), path)
 
 
 if __name__ == '__main__':
-    h = 256
-    w = 256
+    h, w = 256, 256
+    path = 'weights.pth'
     img_batch = load_image('./lana.jpeg', h, w)
+    
     encoder = Encoder(h=h, w=w)
+
+    if os.path.exists(path):
+        encoder.load_state_dict(torch.load(path))
+    else:
+        save_ckpts(encoder, path)
+
     img_latent = encoder(img_batch)
-    print(img_latent.shape)
+    print(img_latent)
 
