@@ -42,6 +42,7 @@ if __name__ == '__main__':
     else:
         save_ckpts(encoder, path)
 
-    img_latent = encoder(img_batch)
+    with torch.no_grad():
+        img_latent = encoder(img_batch)
     print(img_latent)
 
