@@ -5,5 +5,5 @@ Following is the content information of each day of the work.
 
 ## Day-01
 
-Objective: Implement a encoder and decoder.
+Objective: Implement a encoder and decoder.  
 Evaluation: Take input image, convert the image to latent representation, convert the latent represention back to original image. The original image and the retrieved image should be exactly same.
