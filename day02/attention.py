@@ -47,3 +47,6 @@ if __name__ == '__main__':
     x = torch.randn(1, 12, 512)
     output = attn(x)
     print(output.shape)  # [1, 4, 512]
+    # to test with the nn.MultiheadAttention module 
+    # copy weight of q,k,v,out projections to the AttentionContext params.
+    
