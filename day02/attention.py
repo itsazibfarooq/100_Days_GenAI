@@ -38,7 +38,6 @@ class AttentionContext(nn.Module):
         attn_weights = self.attn_score(x)
         attn_weights = softmax(attn_weights, dim=-1) 
         x = attn_weights @ V 
-        print(x.shape)
         x = x.view(batch_size, seq_len, self.head_dim * self.n_heads)
         x = self.wo(x)
         return x
