@@ -29,7 +29,7 @@ class AttentionContext(nn.Module):
 
         self.attn_score = Attention(hidden_dim, n_heads)
         self.wv = nn.Linear(self.head_dim, self.head_dim)
-        self.wo = nn.Linear(hidden_dim, hidden_dim)
+        self.wo = nn.Linear(self.hidden_dim, self.hidden_dim)
 
     def forward(self, x):
         batch_size, seq_len, _ = x.shape
@@ -49,4 +49,4 @@ if __name__ == '__main__':
     print(output.shape)  # [1, 4, 512]
     # to test with the nn.MultiheadAttention module 
     # copy weight of q,k,v,out projections to the AttentionContext params.
-    
+
