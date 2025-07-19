@@ -11,3 +11,7 @@ Evaluation: Take input image, convert the image to latent representation, conver
 ## Day-02
 
 Manually implemented the attention module for single head and multihead Attention
+
+## Day-03
+
+Implementing Weiner Process via EulerMaruyama method for SDE simulation
