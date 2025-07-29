@@ -27,3 +27,7 @@ Number of creative ways to plot
 ## Day-05
 
 UNet model trained on MNIST dataset to go from gaussian distribution to data distribution 
+
+## Day-06 
+
+Transformer based implementation of the diffusion 
