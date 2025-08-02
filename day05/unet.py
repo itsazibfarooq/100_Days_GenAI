@@ -33,7 +33,7 @@ class GCPP(CPP):
         # sampling from standard gaussian randn() and then changing 
         # standard deviation and mean of that to represent sampling 
         # from isotropic gaussian 
-        return self.alpha(t) * z + self.beta(t) * torch.randn(z.shape, device=device)
+        return self.alpha(t) * z + self.beta(t) * torch.randn_like(z)
 
     def conditional_vector_field(self, x, z, t):
         alpha_t = self.alpha(t)
