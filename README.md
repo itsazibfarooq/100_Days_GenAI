@@ -27,6 +27,12 @@ Number of creative ways to plot
 ## Day-05
 
 UNet model trained on MNIST dataset to go from gaussian distribution to data distribution 
+Added separate commit to for gpu training. Following are the general guidelines for gpu training 
+
+1. model and data should move to gpu. 
+2. start in reverse direction.
+    - move model to gpu.
+    - go in training method and move tensors to gpu (if they are not already there)
 
 ## Day-06 
 
