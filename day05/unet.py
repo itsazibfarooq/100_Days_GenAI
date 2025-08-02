@@ -113,7 +113,7 @@ class FourierEncoder(nn.Module):
         freqs = 2 * torch.pi * self.w * t
         sins = torch.sin(freqs)
         cos = torch.cos(freqs)
-        return torch.cat([sins, cos], dim=-1) * torch.sqrt(torch.Tensor([2])) 
+        return torch.cat([sins, cos], dim=-1) * torch.sqrt(torch.Tensor([2])).to(device) 
     
 class Residual(nn.Module):
     def __init__(self, n_channels: int, t_emb_dim: int, y_emb_dim: int):

@@ -86,14 +86,14 @@ class LinearAlpha(Alpha):
         return t.to(device)
     
     def dt(self, t):
-        return torch.ones(t, device=device)
+        return torch.ones_like(t)
 
 class LinearBeta(Beta):
     def __call__(self, t):
-        return 1 - t.to(device)
+        return 1 - t
 
     def dt(self, t):
-        return -torch.ones(t, device=device)
+        return -torch.ones_like(t)
 
 class SqrtBeta(Beta):
     def __call__(self, t):
