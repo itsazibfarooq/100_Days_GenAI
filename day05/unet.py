@@ -8,6 +8,7 @@ from einops import einsum
 from torchvision import datasets, transforms
 from utils import Trainer, Sampleable, CPP, LinearAlpha, LinearBeta, GuidedVF
 
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 
 class IsotropicGaussian(nn.Module, Sampleable):
@@ -32,7 +33,7 @@ class GCPP(CPP):
         # sampling from standard gaussian randn() and then changing 
         # standard deviation and mean of that to represent sampling 
         # from isotropic gaussian 
-        return self.alpha(t) * z + self.beta(t) * torch.randn_like(z)
+        return self.alpha(t) * z + self.beta(t) * torch.randn(z.shape, device=device)
 
     def conditional_vector_field(self, x, z, t):
         alpha_t = self.alpha(t)
@@ -60,7 +61,7 @@ class MNISTSampler(nn.Module, Sampleable):
     def sample(self, n_samples):
         indices = torch.randperm(len(self.dataset))[:n_samples]
         samples, label = zip(*[self.dataset[i] for i in indices])
-        samples, label = torch.stack(samples), torch.tensor(label, dtype=torch.int64)
+        samples, label = torch.stack(samples).to(device), torch.tensor(label, dtype=torch.int64, device=device)
         return samples, label
         
 
@@ -75,11 +76,11 @@ class CFGTrainer(Trainer):
         z, y = self.path.p_data.sample(batch_size) # z:[bs, 1, 32, 32]
         
         # Step 2: Set each label to 10 (i.e., null) with probability eta
-        probs = torch.rand(y.shape)
+        probs = torch.rand(y.shape, device=device)
         y[probs < self.eta] = 10.0
         
         # Step 3: Sample t and x
-        ts = torch.rand(batch_size, 1, 1, 1) #ts:[bs, 1, 1, 1]
+        ts = torch.rand(batch_size, 1, 1, 1, device=device) #ts:[bs, 1, 1, 1]
         x = self.path.sample_conditional_path(z, ts) # x: [bs, 1, 32, 32]
 
         # Step 4: Regress and output loss
@@ -259,7 +260,7 @@ if __name__ == "__main__":
         n_residual_layers=2, 
         t_emb_dim=40, 
         y_emb_dim=40
-    )
+    ).to(device)
 
     trainer = CFGTrainer(path=path, net=unet, eta=0.1)
     print(f'Model Size: {trainer.model_size():.3f}MiB')

@@ -5,6 +5,8 @@ from abc import ABC, abstractmethod
 from typing import Optional, List 
 from tqdm import trange 
 
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
+
 class GuidedVF(nn.Module, ABC):
     @abstractmethod 
     def forward(self, x: torch.Tensor, t: torch.Tensor, y: torch.Tensor):
@@ -32,7 +34,7 @@ class Trainer(ABC):
         return size / (1024**2)
         
     def get_optimizer(self, lr: float):
-        return torch.optim.Adam(self.net.parameters(), lr=lr)
+        return torch.optim.Adam(self.net.parameters(), lr=lr, device=device)
     
     def train(self, n_epochs: int, batch_size: int, lr: float = 1e-3):
         print(f'Training model of size {self.model_size()}')
@@ -50,10 +52,10 @@ class Trainer(ABC):
 class Alpha(ABC):
     def __init__(self):
         assert torch.allclose(
-            self(torch.zeros(1,1)), torch.zeros(1,1)
+            self(torch.zeros(1,1)), torch.zeros(1,1).to(device)
         )
         assert torch.allclose(
-            self(torch.ones(1,1)), torch.ones(1,1)
+            self(torch.ones(1,1)), torch.ones(1,1).to(device)
         )
     @abstractmethod
     def __call__(self, t):
@@ -66,10 +68,10 @@ class Alpha(ABC):
 class Beta(ABC):
     def __init__(self):
         assert torch.allclose(
-            self(torch.zeros(1,1)), torch.ones(1,1)
+            self(torch.zeros(1,1)), torch.ones(1,1).to(device)
         )
         assert torch.allclose(
-            self(torch.ones(1,1)), torch.zeros(1,1)
+            self(torch.ones(1,1)), torch.zeros(1,1).to(device)
         )
     @abstractmethod 
     def __call__(self, t):
@@ -81,17 +83,17 @@ class Beta(ABC):
 
 class LinearAlpha(Alpha):
     def __call__(self, t):
-        return t
+        return t.to(device)
     
     def dt(self, t):
-        return torch.ones_like(t)
+        return torch.ones(t, device=device)
 
 class LinearBeta(Beta):
     def __call__(self, t):
-        return 1 - t
+        return 1 - t.to(device)
 
     def dt(self, t):
-        return -torch.ones_like(t)
+        return -torch.ones(t, device=device)
 
 class SqrtBeta(Beta):
     def __call__(self, t):
