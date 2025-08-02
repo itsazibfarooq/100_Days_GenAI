@@ -264,7 +264,7 @@ if __name__ == "__main__":
 
     trainer = CFGTrainer(path=path, net=unet, eta=0.1)
     print(f'Model Size: {trainer.model_size():.3f}MiB')
-    trainer.train()
+    trainer.train(n_epochs=5000, batch_size=32)
 
 
 
