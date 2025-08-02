@@ -38,7 +38,7 @@ Added separate commit to for gpu training. Following are the general guidelines 
     - go in training method and move tensors to gpu (if they are not already there)  
 [related commit](https://github.com/itsazibfarooq/100_Days_GenAI/commit/210b2179c9bd4eee4ee0d16d1445e8946d99b9cb)
 
-Future: Enable distributed training via accelerate or pytorch lightning
+TODO: Enable distributed training via accelerate or pytorch lightning
 
 ## Day-06 
 
