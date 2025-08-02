@@ -25,6 +25,9 @@ Lab Three: MLP to go from any initial distribution to target distribution using 
 Number of creative ways to plot
 
 ## Day-05
+Following unet architecture is implemented and trained 
+
+![unet architecture](images/unet.png)
 
 UNet model trained on MNIST dataset to go from gaussian distribution to data distribution 
 Added separate commit to for gpu training. Following are the general guidelines for gpu training 
