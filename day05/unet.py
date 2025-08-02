@@ -76,7 +76,7 @@ class CFGTrainer(Trainer):
         z, y = self.path.p_data.sample(batch_size) # z:[bs, 1, 32, 32]
         
         # Step 2: Set each label to 10 (i.e., null) with probability eta
-        probs = torch.rand(y.shape, device=device)
+        probs = torch.rand_like(y, dtype=torch.float32)
         y[probs < self.eta] = 10.0
         
         # Step 3: Sample t and x
