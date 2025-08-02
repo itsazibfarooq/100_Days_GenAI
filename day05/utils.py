@@ -3,6 +3,7 @@ from torch import nn
 from torch.func import vmap, jacrev 
 from abc import ABC, abstractmethod 
 from typing import Optional, List 
+from tqdm import trange 
 
 class GuidedVF(nn.Module, ABC):
     @abstractmethod 

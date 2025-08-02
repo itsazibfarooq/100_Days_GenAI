@@ -3,9 +3,10 @@ warnings.filterwarnings('ignore')
 
 import torch 
 from torch import nn 
-from utils import Trainer, Sampleable, CPP, LinearAlpha, LinearBeta, GuidedVF
 from typing import List 
+from einops import einsum 
 from torchvision import datasets, transforms
+from utils import Trainer, Sampleable, CPP, LinearAlpha, LinearBeta, GuidedVF
 
 
 
@@ -16,7 +17,7 @@ class IsotropicGaussian(nn.Module, Sampleable):
         self.std = std 
     
     def sample(self, n_samples: int):
-        return std * torch.randn_like(n_samples, *self.shape)
+        return self.std * torch.randn_like(n_samples, *self.shape)
 
 class GCPP(CPP):
     def __init__(self, p_init: Sampleable, p_data: Sampleable, alpha: LinearAlpha, beta: LinearBeta):
